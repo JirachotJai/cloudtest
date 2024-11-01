@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Tevents{% endblock %}
+
+{% block head %}Locations{% endblock %}
+
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+
+        
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 ">
+        {% for location in locations %}
+        <div class="col">
+            <div class="card mb-4 rounded">
+                <a class="text-decoration-none"  style="color:black" href="{% url 'location-detail' location.pk %}">
+                    <div class="w-100 overflow-hidden" style="max-height: 220px;">
+                        {% if location.cover_image %}
+                        <img class="card-img-top img-fluid" src="{{location.cover_image.url}}" alt="1234">
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <p class="h4 card-title">{{ location.name }}</p> 
+                        <p class="card-text">{{ location.description }}</p>
+                        {% if perms.tickets.change_location %}
+                        <a href="{% url 'manage-location' location.id%}"><input class = "btn btn-warning my-4 col-md-4 mx-auto" type="submit" value="Edit"/></a>
+                        {% endif %}
+                        {% if perms.tickets.delete_location %}
+                        <a href="{% url 'delete-location' location.id%}"><input class = "btn btn-danger my-4 col-md-3 mx-auto" type="submit" value="Delete"/></a>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

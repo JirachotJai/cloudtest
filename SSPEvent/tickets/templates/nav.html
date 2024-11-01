@@ -1,0 +1,57 @@
+{% load static %}
+
+  <div class="collapse navbar-collapse" id="navbarNavDropdown navbarDropdownMenuLink">
+    
+    <ul class="navbar-nav me-auto">
+        <li class="nav-item active">
+        <a class="nav-link" href="{% url 'event-list'%}">Events</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'location-list'%}">Location</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% if request.user.is_authenticated %}{% url 'user-profile' request.user.username %}{% endif %}">My Profile</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              Manage
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            {% if perms.tickets.add_event %}
+            <li><a class="dropdown-item" href="{% url 'create-event' %}">Create Event</a></li>
+            {% endif %}
+            {% if perms.tickets.add_location %}
+            <li><a class="dropdown-item" href="{% url 'create-location' %}">Create Location</a></li>
+            {% endif %}
+            {% if perms.tickets.add_locationtype %}
+            <li><a class="dropdown-item" href="{% url 'create-locationtype' %}">Create Location Type</a></li>
+            {% endif %}
+            {% if perms.tickets.manage_event %}
+            <li><a class="dropdown-item" href="{% url 'manage-event' %}">Approve Event</a></li>
+            {% endif %}
+          </ul>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav ms-auto pe-5">
+      <li class="nav-item pe-2">
+        {% if request.user.is_authenticated %}
+        <span class="nav-link">-- Welcome {{request.user.username}} ({{request.user.first_name}} {{request.user.last_name}}) --</span>
+        {% endif %}
+      </li>
+      <li class="nav-item">
+        {% if request.user.is_authenticated %}
+        <a class=" btn btn-outline-danger" href="{% url 'logout' %}">LOGOUT</a>
+        {% else %}
+        <a class=" btn btn-outline-primary" href="{% url 'login' %}">LOGIN</a>
+        {% endif %}
+      </li>
+    </ul>
+    {% if search_enable %}
+    <form class="d-flex my-auto" role="search">
+      <input class="form-control me-2" type="search" placeholder="Search" name="search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+    {% endif %}
+  </div>
+  
